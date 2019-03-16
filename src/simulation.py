@@ -7,10 +7,7 @@ from hp import *
 from utils import progressBar
 from controller import controller
 from strategies import randomStrategy, greedyStrategy, smartGreedyStrategy, opportunistStrategy
-from rl_interface import rl_strategy, load_rl_strategy
-from es import es_strategy, load_es_strategy
 from features import FeatureExtractor
-from minimax import searchAgent, greedyEvaluationFunction
 
 def simulate(n_simul, agents, grid_size, candy_ratio = 1., max_iter = 500):
     print "Simulations"
@@ -48,34 +45,6 @@ if __name__ ==  "__main__":
     strategies = config.opponents
     game_hp = config.game_hp
 
-    if config.agent == "RL":
-        rl_hp = config.rl_hp
-        featureExtractor = FeatureExtractor(len(config.opponents), game_hp.grid_size, radius_ = rl_hp.radius)
-        if len(sys.argv) > 2 and sys.argv[2] == "load":
-            print "Loading weights.."
-            rlStrategy = load_rl_strategy(load_from(config.filename + ".p"), config.opponents, featureExtractor)
-        else:
-            rlStrategy = rl_strategy(config.opponents, featureExtractor, game_hp, rl_hp, num_trials = config.num_trials, filename = config.filename + ".p")
-        strategies.append(rlStrategy)
-    # elif config.agent == "PG":
-    #     rl_hp = config.rl_hp
-    #     featureExtractor = FeatureExtractor(len(config.opponents), game_hp.grid_size, radius_ = rl_hp.radius)
-    #     if len(sys.argv) > 2 and sys.argv[2] == "load":
-    #         print "Loading weights.."
-    #         rlStrategy = load_pg_strategy(load_from(config.filename + ".p"), config.opponents, featureExtractor)
-    #     else:
-    #         rlStrategy = pg_strategy(config.opponents, featureExtractor, game_hp, rl_hp, num_trials = config.num_trials, filename = config.filename + ".p")
-    #     strategies.append(rlStrategy)
-    elif config.agent == "ES":
-        es_hp = config.es_hp
-        featureExtractor = FeatureExtractor(len(config.opponents), game_hp.grid_size, radius_ = es_hp.radius)
-        if len(sys.argv) > 2 and sys.argv[2] == "load":
-            print "Loading weights.."
-            esStrategy = load_es_strategy(config.filename + ".p", config.opponents, featureExtractor, game_hp.discount)
-        else:
-            esStrategy = es_strategy(config.opponents, featureExtractor, game_hp.discount, game_hp.grid_size, num_trials = config.num_trials, max_iter = game_hp.max_iter, filename = config.filename + ".p")
-        strategies.append(esStrategy)
-
     start = time()
     wins, points, scores, iterations = simulate(n_simul, strategies, game_hp.grid_size, max_iter = MAX_ITER)
     tot_time = time() - start
@@ -100,5 +69,5 @@ if __name__ ==  "__main__":
 
         print >> fout, "\n\nParams"
         print >> fout, "\n".join(
-            ["{} = {}".format(k, config.__dict__[k] if k != "opponents" else ", ".join([str(o) for o in config.__dict__[k]])) for k in ["agent", "filename", "game_hp", "rl_hp", "es_hp", "depth", "evalFn", "num_trials", "opponents", "comment"]]
+            ["{} = {}".format(k, config.__dict__[k] if k != "opponents" else ", ".join([str(o) for o in config.__dict__[k]])) for k in ["agent", "filename", "game_hp", "depth", "num_trials", "opponents", "comment"]]
         )

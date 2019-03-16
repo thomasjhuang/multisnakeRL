@@ -103,7 +103,7 @@ if __name__ ==  "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "h":
         human_player = True
     max_iter = None
-    strategies = [SmartGreedyAgent, OpportunistAgent]
+    strategies = [SmartGreedyAgent, SmartGreedyAgent, OpportunistAgent]
 
     '''
     # add an RL agent
@@ -121,4 +121,4 @@ if __name__ ==  "__main__":
     if human_player:
         strategies.append(HumanAgent)
 
-    controller(strategies, 50, max_iter = max_iter, gui_active = True, verbose = 0, game_speed = 10)
+    controller(strategies, 20, max_iter = max_iter, gui_active = True, verbose = 0, game_speed = 10)
