@@ -27,7 +27,7 @@ class State:
 
     def __init__(self, snakes, candies):
         self.snakes = snakes
-        self.candies = dict((c.position, c.value) for c in candies)
+        self.candies = {c.position : c.value for c in candies}
         self.scores = {}
         self.iter = 0
 
@@ -78,7 +78,7 @@ class State:
         :return: True if the candy has been added, False if not
         """
         if all(not s.onSnake(pos) for a, s in self.snakes.items() if a != dead_snake) \
-                and not pos in self.candies.keys():
+                and not pos in list(self.candies.keys()):
             self.candies[pos] = val
             return True
         return False
@@ -220,7 +220,7 @@ class State:
 
         # remove snakes which bumped into other snakes
 
-        for id in moves.keys():
+        for id in list(moves.keys()):
             # list of (x,y) points occupied by other snakes
             if not id in deads and (self.onOtherSnakes(self.snakes[id].position[0], id)\
                     or (accelerated[id] and self.onOtherSnakes(self.snakes[id].position[1], id))\
@@ -238,16 +238,16 @@ class State:
             del self.snakes[id]
 
         if len(self.snakes) == 1:
-            winner = self.snakes.keys()[0]
+            winner = list(self.snakes.keys())[0]
             self.scores[winner] = (1, self.snakes[winner].points)
 
         return self
 
     def isWin(self, agent):
-        return len(self.snakes) == 1 and agent in self.snakes.keys()
+        return len(self.snakes) == 1 and agent in list(self.snakes.keys())
 
     def isLose(self, agent):
-        return len(self.snakes) >= 1 and agent not in self.snakes.keys()
+        return len(self.snakes) >= 1 and agent not in list(self.snakes.keys())
 
     def isDraw(self):
         return len(self.snakes) == 0
@@ -257,9 +257,9 @@ class State:
 
     def getNextAgent(self, agent, agents=None):
         if agents is None:
-            agents = self.snakes.keys()
+            agents = list(self.snakes.keys())
         else:
-            agents = set(agents).intersection(set(self.snakes.keys()))
+            agents = set(agents).intersection(set(list(self.snakes.keys())))
         for i in range(1,self.n_snakes+1):
             next_snake = (agent+i) % self.n_snakes
             if next_snake in agents:
@@ -349,7 +349,7 @@ class Game:
         """
 
         n_squares_per_row = int(math.ceil(math.sqrt(self.n_snakes))**2)
-        square_size = self.grid_size / int(n_squares_per_row)
+        square_size = self.grid_size // int(n_squares_per_row)
         assignment = random.sample(range(n_squares_per_row ** 2), self.n_snakes)
 
 
@@ -357,7 +357,7 @@ class Game:
 
         snakes = {}
         for snake, assign in enumerate(assignment):
-            head = (random.randint(1, square_size-2) + (assign / n_squares_per_row) * square_size,
+            head = (random.randint(1, square_size-2) + (assign // n_squares_per_row) * square_size,
                     random.randint(1, square_size-2) + (assign % n_squares_per_row) * square_size)
             snakes[snake] = newSnake([head, utils.add(head, random.sample(DIRECTIONS, 1)[0])], snake)
 
@@ -391,7 +391,7 @@ class Game:
         return self.current_state.isAlive(agent_id)
 
     def agentActions(self):
-        return {i: self.agents[i].nextAction(self.current_state) for i in self.current_state.snakes.keys()}
+        return {i: self.agents[i].nextAction(self.current_state) for i in list(self.current_state.snakes.keys())}
 
     def succ(self, state, actions, copy = True):
         """

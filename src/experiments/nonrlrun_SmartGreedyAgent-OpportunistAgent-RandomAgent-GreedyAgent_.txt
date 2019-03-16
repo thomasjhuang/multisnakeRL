@@ -1,30 +1,34 @@
 
 
 =======Results=======
-Run 1000 simulations
+Run 20 simulations
 Max iteration: 1000 
 
-	 Snake 0 (SmartGreedyAgent) wins 28.10% of the games, with 70.00 points on average
-	 Snake 1 (OpportunistAgent) wins 40.00% of the games, with 79.00 points on average
-	 Snake 2 (RandomAgent) wins 6.80% of the games, with 17.00 points on average
-	 Snake 3 (GreedyAgent) wins 10.40% of the games, with 52.00 points on average
+	 Snake 0 (SmartGreedyAgent) wins 25.00% of the games, with 99.40 points on average
+	 Snake 0 (SmartGreedyAgent) wins 25.00% of the games, with 99.40 points on average
+	 Snake 1 (OpportunistAgent) wins 35.00% of the games, with 70.14 points on average
+	 Snake 1 (OpportunistAgent) wins 35.00% of the games, with 70.14 points on average
+	 Snake 2 (RandomAgent) wins 15.00% of the games, with 8.67 points on average
+	 Snake 2 (RandomAgent) wins 15.00% of the games, with 8.67 points on average
+	 Snake 3 (GreedyAgent) wins 15.00% of the games, with 20.67 points on average
+	 Snake 3 (GreedyAgent) wins 15.00% of the games, with 20.67 points on average
 
 Scores
-	 Snake 0 (SmartGreedyAgent): avg score = 33.69, finishes with 51.32 points on average
-	 Snake 1 (OpportunistAgent): avg score = 43.13, finishes with 57.50 points on average
-	 Snake 2 (RandomAgent): avg score = 5.93, finishes with 13.50 points on average
-	 Snake 3 (GreedyAgent): avg score = 12.33, finishes with 25.25 points on average
+	 Snake 0 (SmartGreedyAgent): avg score = 47.08, finishes with 74.25 points on average
+	 Snake 1 (OpportunistAgent): avg score = 35.46, finishes with 49.70 points on average
+	 Snake 2 (RandomAgent): avg score = 6.75, finishes with 14.65 points on average
+	 Snake 3 (GreedyAgent): avg score = 12.55, finishes with 29.80 points on average
 
-Iterations per game: 172.01 +- 103.72
+Iterations per game: 197.60 +- 136.20
 Time out is reached 0.00% of the time
-Simulations took 0.151720243931 sec on avg
+Simulations took 0.2572793483734131 sec on avg
 
 
 Params
 agent = simplestrategies
 filename = nonrlrun
-game_hp = discount = 0.9 | max_iter = 3000 | grid_size = 20
-depth = <function <lambda> at 0x103154578>
-num_trials = 5000
+game_hp = grid_size = 20 | max_iter = 30 | discount = 0.9
+depth = <function <lambda> at 0x108a94268>
+num_trials = 10
 opponents = SmartGreedyAgent, OpportunistAgent, RandomAgent, GreedyAgent
 comment = 

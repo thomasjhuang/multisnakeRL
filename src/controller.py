@@ -68,7 +68,7 @@ def controller(strategies, grid_size, candy_ratio = 1., max_iter = None, verbose
                 human_action = prev_human_action
 
         # Assign human action
-        if i_human is not None and i_human in actions.keys():
+        if i_human is not None and i_human in list(actions.keys()):
             actions[i_human] = human_action
             prev_human_action = human_action
 

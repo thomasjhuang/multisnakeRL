@@ -14,7 +14,7 @@ class newSnake:
         self.bool_pos = np.zeros((self.grid_size, self.grid_size)) #array of nxn
         self.id = i
         for pos in position:
-            pos = tuple(map(int, pos))
+            #        pos = tuple(map(int, pos))
             self.bool_pos[pos] = 1
 
     def head(self):
@@ -24,19 +24,15 @@ class newSnake:
         return move.apply(self.head())
 
     def onSnake(self, pos):
-        pos = tuple(map(int, pos))
         return self.bool_pos[pos] > 0
 
     def onSnakeOrNotGrid(self, pos):
-        pos = tuple(map(int, pos))
         return not utils.isOnGrid(pos, self.grid_size) or self.onSnake(pos)
 
     def countSnake(self, pos):
-        pos = tuple(map(int, pos))
         return self.bool_pos[pos]
 
     def onSnakeExceptLastOrNotGrid(self, pos, n):
-        pos = tuple(map(int, pos))
         return not utils.isOnGrid(pos, self.grid_size) or \
                (self.countSnake(pos) - sum(int(self.position[-i] == pos) for i in range(1,n+1)) >= 1)
 
@@ -51,17 +47,14 @@ class newSnake:
         self.bool_pos[head] -= 1
 
     def add(self, pos):
-        pos = tuple(map(int, pos))
         self.bool_pos[pos] += 1
         self.position.appendleft(pos)
 
     def addRight(self, pos):
-        pos = tuple(map(int, pos))
         self.bool_pos[pos] += 1
         self.position.append(pos)
 
     def isInArea(self, pos, radius):
-        pos = tuple(map(int, pos))
         for i in range(max(-radius+pos[0],0), min(radius+pos[0]+1, self.grid_size)):
             for j in range(max(-radius+pos[1],0), min(radius+pos[1]+1, self.grid_size)):
                 if self.onSnake((i,j)):
@@ -168,13 +161,13 @@ class newSnake:
     def addPoints(self, val):
         self.points += val
         # check if size increases
-        if self.points / CANDY_BONUS > self.size():
+        if self.points // CANDY_BONUS > self.size():
             self.addRight(self.last_tail)
 
     def removePoints(self, val):
         self.points -= val
         # check if size decreases
-        if self.points / CANDY_BONUS < self.size():
+        if self.points // CANDY_BONUS < self.size():
             tail = self.pop()
             self.last_tail = tail
 
@@ -255,11 +248,9 @@ class Snake:
         return None
 
     def onSnake(self, pos):
-        pos = tuple(map(int, pos))
         return pos in self.position
 
     def countSnake(self, pos):
-        pos = tuple(map(int, pos))
         return self.position.count(pos)
 
     def size(self):
@@ -271,14 +262,14 @@ class Snake:
     def addPoints(self, val):
         self.points += val
         # check if size increases
-        if self.points / CANDY_BONUS > self.size:
+        if self.points // CANDY_BONUS > self.size:
             self.position.append(self.last_tail)
             self.size += 1
 
     def removePoints(self, val):
         self.points -= val
         # check if size decreases
-        if self.points / CANDY_BONUS < self.size:
+        if self.points // CANDY_BONUS < self.size:
             self.last_tail = self.position[-1]
             del self.position[-1]
             self.size -= 1
