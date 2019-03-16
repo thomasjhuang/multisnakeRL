@@ -1,3 +1,27 @@
+'''
+MIT License
+
+Copyright (c) 2018 Sebastien Dubois, Sebastien Levy, Felix Crevier
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+'''
+
 import math
 import random
 from copy import deepcopy
@@ -50,7 +74,7 @@ class State:
     def onOtherSnakes(self, pos, id):
         return any(s.onSnake(pos) for i,s in self.snakes.items() if i != id)
 
-    def oneAgentUpdate(self, id, m):
+    def onAgentUpdate(self, id, m):
         #Remember changes
         snake_who_died = None
         fruits_to_add = []
@@ -223,7 +247,7 @@ class State:
         return agent
 
     def generateSuccessor(self, agent, move):
-        return self.oneAgentUpdate(agent, move)
+        return self.onAgentUpdate(agent, move)
 
     def getScore(self, agent):
         if self.isDraw():
@@ -316,7 +340,7 @@ class Game:
 
         snakes = {}
         for snake, assign in enumerate(snake_assignment):
-            ''' Randomly chose a point for the head in the assigned spawn section that is at least 2 away from the 
+            ''' Randomly chose a point for the head in the assigned spawn section that is at least 2 away from the
             boundaries of the section to ensure that a snake of length 2 will not exceeed the section's boundaries '''
             head = (random.randint(1, spawn_section_size - 2) + (assign // num_spawn_sections_row) * spawn_section_size,
                     random.randint(1, spawn_section_size - 2) + (assign % num_spawn_sections_row) * spawn_section_size)
@@ -381,6 +405,3 @@ class Game:
         else: # it died
             reward = - 10.
         return reward
-
-
-
