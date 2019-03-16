@@ -45,7 +45,7 @@ class SnakeSprite:
         pos_count = collections.defaultdict(int)
         for pos in tail:
             pos_count[pos] +=1
-        for pos,n in pos_count.iteritems():
+        for pos,n in pos_count.items():
             tile_color = options.colors[color]
             if n>1:
                 tile_color = self.darken(tile_color)
@@ -88,7 +88,7 @@ class Window:
         self.display.flip()
 
     def print_message(self, message):
-        print message
+        print(message)
 
     # Convert grid (x,y) gui/pixel (u,v) indices
     def xy2uv(self,xy_list):

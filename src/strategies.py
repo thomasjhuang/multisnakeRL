@@ -47,7 +47,7 @@ def smartGreedyStrategy(id, state):
     if len(state.candies) == 0:
         return random.sample(actions, 1)[0]
     best_move = min((dist(snake.predictHead(move), candy), move)
-                    for candy in state.candies.iterkeys() for move in actions)
+                    for candy in state.candies.keys() for move in actions)
     return best_move[1]
 
 def opportunistStrategy(id, state):
@@ -68,11 +68,11 @@ def opportunistStrategy(id, state):
     if len(state.candies) == 0:
         return random.sample(actions, 1)[0]
 
-    min_dist = dict((candy, min(dist(s.position[0], candy) for s in state.snakes.itervalues()))
+    min_dist = dict((candy, min(dist(s.position[0], candy) for s in state.snakes.values()))
                     for candy in state.candies.keys())
     best_move = min((dist(snake.predictHead(move), candy) - min_dist[candy],
                      dist(snake.predictHead(move), candy), move)
-                    for candy in state.candies.iterkeys() for move in actions)
+                    for candy in state.candies.keys() for move in actions)
     return best_move[2]
 
 

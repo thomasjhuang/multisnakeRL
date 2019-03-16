@@ -14,6 +14,7 @@ class newSnake:
         self.bool_pos = np.zeros((self.grid_size, self.grid_size)) #array of nxn
         self.id = i
         for pos in position:
+            pos = tuple(map(int, pos))
             self.bool_pos[pos] = 1
 
     def head(self):
@@ -23,17 +24,21 @@ class newSnake:
         return move.apply(self.head())
 
     def onSnake(self, pos):
+        pos = tuple(map(int, pos))
         return self.bool_pos[pos] > 0
 
     def onSnakeOrNotGrid(self, pos):
+        pos = tuple(map(int, pos))
         return not utils.isOnGrid(pos, self.grid_size) or self.onSnake(pos)
 
     def countSnake(self, pos):
+        pos = tuple(map(int, pos))
         return self.bool_pos[pos]
 
     def onSnakeExceptLastOrNotGrid(self, pos, n):
+        pos = tuple(map(int, pos))
         return not utils.isOnGrid(pos, self.grid_size) or \
-               (self.countSnake(pos) - sum(int(self.position[-i] == pos) for i in xrange(1,n+1)) >= 1)
+               (self.countSnake(pos) - sum(int(self.position[-i] == pos) for i in range(1,n+1)) >= 1)
 
     def pop(self):
         tail = self.position.pop()
@@ -46,16 +51,19 @@ class newSnake:
         self.bool_pos[head] -= 1
 
     def add(self, pos):
+        pos = tuple(map(int, pos))
         self.bool_pos[pos] += 1
         self.position.appendleft(pos)
 
     def addRight(self, pos):
+        pos = tuple(map(int, pos))
         self.bool_pos[pos] += 1
         self.position.append(pos)
 
     def isInArea(self, pos, radius):
-        for i in xrange(max(-radius+pos[0],0), min(radius+pos[0]+1, self.grid_size)):
-            for j in xrange(max(-radius+pos[1],0), min(radius+pos[1]+1, self.grid_size)):
+        pos = tuple(map(int, pos))
+        for i in range(max(-radius+pos[0],0), min(radius+pos[0]+1, self.grid_size)):
+            for j in range(max(-radius+pos[1],0), min(radius+pos[1]+1, self.grid_size)):
                 if self.onSnake((i,j)):
                     return True
         return False
@@ -63,8 +71,8 @@ class newSnake:
     def compactRate(self, radius):
         pos = self.head()
         num = 0
-        for i in xrange(max(-radius+pos[0],0), min(radius+pos[0]+1, self.grid_size)):
-            for j in xrange(max(-radius+pos[1],0), min(radius+pos[1]+1, self.grid_size)):
+        for i in range(max(-radius+pos[0],0), min(radius+pos[0]+1, self.grid_size)):
+            for j in range(max(-radius+pos[1],0), min(radius+pos[1]+1, self.grid_size)):
                 if self.bool_pos[(i,j)]:
                     num += 1
         return float(num)/((2*radius+1)**2 - 1)
@@ -138,11 +146,11 @@ class newSnake:
         self.pop()
         head = utils.add(self.head(), direction)
         if not utils.isOnGrid(head, self.grid_size):
-            print head
-            print self.id
-            print self.position
-            print self.bool_pos
-            print self
+            print (head)
+            print (self.id)
+            print (self.position)
+            print (self.bool_pos)
+            print (self)
         if self.onSnake(head):
             self.on_tail = True
         self.add(head)
@@ -247,9 +255,11 @@ class Snake:
         return None
 
     def onSnake(self, pos):
+        pos = tuple(map(int, pos))
         return pos in self.position
 
     def countSnake(self, pos):
+        pos = tuple(map(int, pos))
         return self.position.count(pos)
 
     def size(self):

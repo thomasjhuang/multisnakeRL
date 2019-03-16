@@ -73,8 +73,8 @@ def controller(strategies, grid_size, candy_ratio = 1., max_iter = None, verbose
             prev_human_action = human_action
 
         if verbose > 1:
-            print state
-            print actions
+            print(state)
+            print(actions)
 
         # Update the state
         if not game_over:

@@ -31,8 +31,8 @@ class FeatureExtractor:
         }
         self.index = {}
         i = 0
-        for x in xrange(1-self.radius, self.radius):
-            for y in xrange(1-self.radius, self.radius):
+        for x in range(1-self.radius, self.radius):
+            for y in range(1-self.radius, self.radius):
                 if utils.dist((0,0), (x,y)) < self.radius:
                     self.index[(x,y)] = i
                     i += 1
@@ -78,23 +78,23 @@ class FeatureExtractor:
 
         features = [
             (('candy', v, relPos(c)), 1.)
-                for c,v in state.candies.iteritems()
+                for c,v in state.candies.items()
                 if utils.dist(head, c) < self.radius
         ]
         features += [
             (('adv-head', relPos(s.head())), 1.)
-                for k,s in state.snakes.iteritems()
+                for k,s in state.snakes.items()
                 if k != self.id and utils.dist(head, s.head()) < self.radius
         ]
         features += [
             (('adv-tail', relPos(s.position[i])), 1.)
-                for k,s in state.snakes.iteritems()
-                for i in xrange(1, len(s.position))
+                for k,s in state.snakes.items()
+                for i in range(1, len(s.position))
                 if k != self.id and utils.dist(head, s.position[i]) < self.radius
         ]
         features += [
             (('my-tail', relPos(state.snakes[self.id].position[i])), 1.)
-                for i in xrange(1, len(state.snakes[self.id].position))
+                for i in range(1, len(state.snakes[self.id].position))
                 if utils.dist(head, state.snakes[self.id].position[i]) < self.radius
         ]
 
@@ -164,7 +164,7 @@ class FeatureExtractor:
             elif f[0] in ["wall-xr", "wall-xl", "wall-yt", "wall-yb"]: #["x", "y"]:
                 arrayFeatures[self.prefix[f[0]] + f[1]] += 1.
             else:
-                print "ERROR: feature not recognized", f
+                print ("ERROR: feature not recognized", f)
         return arrayFeatures
 
     def keyToIndex(self, f):

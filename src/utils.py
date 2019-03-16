@@ -14,7 +14,7 @@ def add(tuple1, tuple2, mu = 1):
     """
     Return tuple1 + mu * tuple2.
     """
-    return tuple([tuple1[i] + mu * tuple2[i] for i in xrange(len(tuple1))])
+    return tuple([tuple1[i] + mu * tuple2[i] for i in range(len(tuple1))])
 
 def mult(t, mu):
     return tuple([x * mu for x in t])
@@ -68,4 +68,4 @@ def progressBar(iteration, n_total, size = 50, info = None):
             sys.stdout.write("[<{}D-<{}] {}%".format('='*i, ' '*(size-i), (100/size)*i))
         sys.stdout.flush()
     if iteration == n_total:
-        print ""
+        print("")

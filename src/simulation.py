@@ -11,24 +11,24 @@ from features import FeatureExtractor
 
 def simulate(n_simul, agents, grid_size, candy_ratio = 1., max_iter = 500):
     print "Simulations"
-    wins = dict((id, 0.) for id in xrange(len(agents)))
-    points = dict((id, []) for id in xrange(len(agents)))
-    scores = dict((id, []) for id in xrange(len(agents)))
+    wins = dict((id, 0.) for id in range(len(agents)))
+    points = dict((id, []) for id in range(len(agents)))
+    scores = dict((id, []) for id in range(len(agents)))
 
     iterations = []
-    for it in xrange(n_simul):
+    for it in range(n_simul):
         progressBar(it, n_simul)
         endState = controller(agents, grid_size, candy_ratio = candy_ratio, max_iter = max_iter, verbose = 0)
         if len(endState.snakes) == 1:
             wins[endState.snakes.keys()[0]] += 1. / n_simul
             points[endState.snakes.keys()[0]].append(endState.snakes.values()[0].points)
 
-        for id in xrange(len(agents)):
+        for id in range(len(agents)):
             scores[id].append(endState.scores[id])
 
         iterations.append(endState.iter)
     progressBar(n_simul, n_simul)
-    points = dict((id, sum(val)/len(val)) for id,val in points.iteritems())
+    points = dict((id, sum(val)/len(val)) for id,val in points.items())
     return wins, points, scores, iterations
 
 
@@ -40,7 +40,7 @@ if __name__ ==  "__main__":
     else:
         n_simul = 1000
 
-    print "Simulation config:", ["{} = {}".format(k,v) for k,v in config.__dict__.iteritems() if not k.startswith('__')]
+    print "Simulation config:", ["{} = {}".format(k,v) for k,v in config.__dict__.items() if not k.startswith('__')]
 
     strategies = config.opponents
     game_hp = config.game_hp

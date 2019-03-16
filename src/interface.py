@@ -34,9 +34,9 @@ class State:
     def __str__(self):
         s = "--- state {} ---\n".format(self.iter)
         s += "- snakes:\n"
-        s += "\n".join(["\t{}:\t{}\t-\t{}".format(id, s.points, s.position) for id,s in self.snakes.iteritems()])
+        s += "\n".join(["\t{}:\t{}\t-\t{}".format(id, s.points, s.position) for id,s in self.snakes.items()])
         s += "\n- candies:\n"
-        s += "\n".join(["\t{}\t{}".format(v, pos) for pos,v in self.candies.iteritems()])
+        s += "\n".join(["\t{}\t{}".format(v, pos) for pos,v in self.candies.items()])
         return s
 
     def shape(self, i, j):
@@ -44,7 +44,7 @@ class State:
             if self.candies[(i,j)] == CANDY_BONUS:
                 return ' +'
             return ' *'
-        for id, s in self.snakes.iteritems():
+        for id, s in self.snakes.items():
             if (i,j) == s.position[0]:
                 return ' @'
             c = s.countSnake((i,j))
@@ -62,7 +62,7 @@ class State:
         for i in range(grid_size):
             s += '|' + ''.join(self.shape(i,j) for j in range(grid_size)) + '|\n'
         s += "-" * 2*(grid_size + 1)+ '\n'
-        print s
+        print(s)
 
     def isAlive(self, snake_id):
         """
@@ -77,7 +77,7 @@ class State:
         :param val: the value of the candy
         :return: True if the candy has been added, False if not
         """
-        if all(not s.onSnake(pos) for a, s in self.snakes.iteritems() if a != dead_snake) \
+        if all(not s.onSnake(pos) for a, s in self.snakes.items() if a != dead_snake) \
                 and not pos in self.candies.keys():
             self.candies[pos] = val
             return True
@@ -92,7 +92,7 @@ class State:
                 n -= 1
 
     def onOtherSnakes(self, pos, id):
-        return any(s.onSnake(pos) for i,s in self.snakes.iteritems() if i != id)
+        return any(s.onSnake(pos) for i,s in self.snakes.items() if i != id)
 
     def oneAgentUpdate(self, id, m):
         #Remember changes
@@ -186,7 +186,7 @@ class State:
         # update positions
         candies_to_add = []
         accelerated = {}
-        for id, m in moves.iteritems():
+        for id, m in moves.items():
             # If the snake couldn't move, then it's dead
             if m is None or not self.snakes[id].authorizedMove(m):
                 deads.append(id)
@@ -244,10 +244,10 @@ class State:
         return self
 
     def isWin(self, agent):
-        return len(self.snakes) == 1 and agent in self.snakes.iterkeys()
+        return len(self.snakes) == 1 and agent in self.snakes.keys()
 
     def isLose(self, agent):
-        return len(self.snakes) >= 1 and agent not in self.snakes.iterkeys()
+        return len(self.snakes) >= 1 and agent not in self.snakes.keys()
 
     def isDraw(self):
         return len(self.snakes) == 0
@@ -259,7 +259,7 @@ class State:
         if agents is None:
             agents = self.snakes.keys()
         else:
-            agents = set(agents).intersection(set(self.snakes.iterkeys()))
+            agents = set(agents).intersection(set(self.snakes.keys()))
         for i in range(1,self.n_snakes+1):
             next_snake = (agent+i) % self.n_snakes
             if next_snake in agents:
