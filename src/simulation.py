@@ -9,7 +9,7 @@ from controller import controller
 from strategies import randomStrategy, greedyStrategy, smartGreedyStrategy, opportunistStrategy
 from features import FeatureExtractor
 
-def simulate(n_simul, agents, grid_size, candy_ratio = 1., max_iter = 500):
+def simulate(n_simul, agents, grid_size, fruit_ratio = 1., max_iter = 500):
     print("Simulations")
     wins = dict((id, 0.) for id in range(len(agents)))
     points = dict((id, []) for id in range(len(agents)))
@@ -18,7 +18,7 @@ def simulate(n_simul, agents, grid_size, candy_ratio = 1., max_iter = 500):
     iterations = []
     for it in range(n_simul):
         progressBar(it, n_simul)
-        endState = controller(agents, grid_size, candy_ratio = candy_ratio, max_iter = max_iter, verbose = 0)
+        endState = controller(agents, grid_size, fruit_ratio = fruit_ratio, max_iter = max_iter, verbose = 0)
         if len(endState.snakes) == 1:
             wins[list(endState.snakes.keys())[0]] += 1. / n_simul
             points[list(endState.snakes.keys())[0]].append(list(endState.snakes.values())[0].points)

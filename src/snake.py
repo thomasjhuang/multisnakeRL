@@ -1,14 +1,14 @@
 import numpy as np
 from collections import deque
 import utils
-from constants import NORM_MOVES, CANDY_VAL, CANDY_BONUS
+from constants import NORM_MOVES, FRUIT_VAL, FRUIT_BONUS
 
 class newSnake:
     grid_size = None
 
     def __init__(self, position, i=0):
         self.position = deque(position)
-        self.points = len(position)*CANDY_BONUS
+        self.points = len(position) * FRUIT_BONUS
         self.on_tail = False
         self.last_tail = None
         self.bool_pos = np.zeros((self.grid_size, self.grid_size)) #array of nxn
@@ -112,7 +112,7 @@ class newSnake:
             self.popleft()
             self.addRight(pos)
         if len(last_pos) == 2:
-            self.addPoints(CANDY_VAL)
+            self.addPoints(FRUIT_VAL)
         self.last_tail = last_tail
         self.on_tail = (self.countSnake(self.head()) >= 2)
 
@@ -133,7 +133,7 @@ class newSnake:
             if self.onSnake(new_head):
                 self.on_tail = True
             self.add(new_head)
-            self.removePoints(CANDY_VAL)
+            self.removePoints(FRUIT_VAL)
             return before_last_tail
 
         self.pop()
@@ -161,13 +161,13 @@ class newSnake:
     def addPoints(self, val):
         self.points += val
         # check if size increases
-        if self.points // CANDY_BONUS > self.size():
+        if self.points // FRUIT_BONUS > self.size():
             self.addRight(self.last_tail)
 
     def removePoints(self, val):
         self.points -= val
         # check if size decreases
-        if self.points // CANDY_BONUS < self.size():
+        if self.points // FRUIT_BONUS < self.size():
             tail = self.pop()
             self.last_tail = tail
 
@@ -178,7 +178,7 @@ class Snake:
     """
     def __init__(self, position):
         self.position = position
-        self.points = 2*CANDY_BONUS
+        self.points = 2 * FRUIT_BONUS
         self.size = 2
         self.last_tail = None
         self.on_tail = False
@@ -235,7 +235,7 @@ class Snake:
             second = utils.add(self.position[0], direction)
             head = utils.add(second, direction)
             self.position = [head, second] + self.position[:-2]
-            self.removePoints(CANDY_VAL)
+            self.removePoints(FRUIT_VAL)
             if head in self.position[1:]:
                 self.on_tail = True
             return self.last_tail
@@ -262,14 +262,14 @@ class Snake:
     def addPoints(self, val):
         self.points += val
         # check if size increases
-        if self.points // CANDY_BONUS > self.size:
+        if self.points // FRUIT_BONUS > self.size:
             self.position.append(self.last_tail)
             self.size += 1
 
     def removePoints(self, val):
         self.points -= val
         # check if size decreases
-        if self.points // CANDY_BONUS < self.size:
+        if self.points // FRUIT_BONUS < self.size:
             self.last_tail = self.position[-1]
             del self.position[-1]
             self.size -= 1

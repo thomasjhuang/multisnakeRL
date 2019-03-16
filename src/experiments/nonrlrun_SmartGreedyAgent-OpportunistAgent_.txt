@@ -1,26 +1,28 @@
 
 
 =======Results=======
-Run 1000 simulations
+Run 10 simulations
 Max iteration: 1000 
 
-	 Snake 0 (SmartGreedyAgent) wins 24.40% of the games, with 100.00 points on average
-	 Snake 1 (OpportunistAgent) wins 35.40% of the games, with 97.00 points on average
+	 Snake 0 (SmartGreedyAgent) wins 50.00% of the games, with 138.40 points on average
+	 Snake 0 (SmartGreedyAgent) wins 50.00% of the games, with 138.40 points on average
+	 Snake 1 (OpportunistAgent) wins 50.00% of the games, with 77.80 points on average
+	 Snake 1 (OpportunistAgent) wins 50.00% of the games, with 77.80 points on average
 
 Scores
-	 Snake 0 (SmartGreedyAgent): avg score = 49.27, finishes with 74.46 points on average
-	 Snake 1 (OpportunistAgent): avg score = 54.88, finishes with 75.39 points on average
+	 Snake 0 (SmartGreedyAgent): avg score = 100.45, finishes with 131.70 points on average
+	 Snake 1 (OpportunistAgent): avg score = 62.00, finishes with 85.10 points on average
 
-Iterations per game: 201.71 +- 121.19
+Iterations per game: 319.50 +- 102.62
 Time out is reached 0.00% of the time
-Simulations took 0.167658313036 sec on avg
+Simulations took 0.46419568061828614 sec on avg
 
 
 Params
 agent = simplestrategies
 filename = nonrlrun
-game_hp = discount = 0.9 | max_iter = 3000 | grid_size = 20
-depth = <function <lambda> at 0x1030b1578>
-num_trials = 5000
+game_hp = grid_size = 20 | max_iter = 30 | discount = 0.9
+depth = <function <lambda> at 0x103754730>
+num_trials = 10
 opponents = SmartGreedyAgent, OpportunistAgent
 comment = 

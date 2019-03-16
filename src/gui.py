@@ -14,7 +14,7 @@ class Options:
                        'BLUE':(0,0,255),'BRONZE':(205,127,50), 'GRAY':(180,180,180), 'GOLD':(212,175,55),\
                        'VIOLET' : (200,0,255)}
         self.snake_colors = ['RED','GREEN','BLUE','VIOLET','GRAY']
-        self.candy_colors = ['BRONZE','GOLD']
+        self.fruit_colors = ['BRONZE','GOLD']
         self.headColor = 'WHITE'
         # Segment geometry
         self.segment_side = 10
@@ -69,9 +69,9 @@ class Window:
     def updateSprites(self,state):
         self.all_sprites = pygame.sprite.Group()
 
-        # Show candies
-        for pos,value in state.candies.items():
-            color = 'GOLD' if value == interface.CANDY_BONUS else 'BRONZE'
+        # Show fruits
+        for pos,value in state.fruits.items():
+            color = 'GOLD' if value == interface.FRUIT_BONUS else 'BRONZE'
             self.all_sprites.add(SegmentSprite(self.xy2uv([pos])[0],self.options.colors[color],self.options))
 
         # Show Snakes

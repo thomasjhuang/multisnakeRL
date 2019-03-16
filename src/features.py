@@ -6,7 +6,7 @@ import utils
 import numpy as np
 from copy import deepcopy
 from scipy.sparse import csr_matrix
-from constants import CANDY_VAL, CANDY_BONUS
+from constants import FRUIT_VAL, FRUIT_BONUS
 
 class FeatureExtractor:
     def __init__(self, id_, grid_size, radius_ = 16):
@@ -155,9 +155,9 @@ class FeatureExtractor:
                 arrayFeatures[self.prefix["tot"] - 1] += 1.
             elif f == "non-auth":
                 arrayFeatures[self.prefix["non-auth"]] += 1.
-            elif f[0] == "candy" and f[1] == CANDY_VAL:
+            elif f[0] == "candy" and f[1] == FRUIT_VAL:
                 arrayFeatures[self.prefix["candy1"] + self.index[f[2]]] += 1.
-            elif f[0] == "candy" and f[1] == CANDY_BONUS:
+            elif f[0] == "candy" and f[1] == FRUIT_BONUS:
                 arrayFeatures[self.prefix["candy2"] + self.index[f[2]]] += 1.
             elif f[0] in ["adv-head", "adv-tail", "my-tail"]:
                 arrayFeatures[self.prefix[f[0]] + self.index[f[1]]] += 1.
@@ -172,9 +172,9 @@ class FeatureExtractor:
             return self.prefix["tot"] - 1
         elif f == "non-auth":
             return self.prefix["non-auth"]
-        elif f[0] == "candy" and f[1] == CANDY_VAL:
+        elif f[0] == "candy" and f[1] == FRUIT_VAL:
             return self.prefix["candy1"] + self.index[f[2]]
-        elif f[0] == "candy" and f[1] == CANDY_BONUS:
+        elif f[0] == "candy" and f[1] == FRUIT_BONUS:
             return self.prefix["candy2"] + self.index[f[2]]
         elif f[0] in ["adv-head", "adv-tail", "my-tail"]:
             return self.prefix[f[0]] + self.index[f[1]]

@@ -1,13 +1,13 @@
 import sys, pickle
 import pygame
 import gui, move, config
-from interface import Game,Snake
+from GameInterface import Game,Snake
 from strategies import randomStrategy, greedyStrategy, smartGreedyStrategy, opportunistStrategy,humanStrategy
 from features import FeatureExtractor
 from pdb import set_trace as t
 from constants import *
 
-def controller(strategies, grid_size, candy_ratio = 1., max_iter = None, verbose = 0, gui_active = False, game_speed = None):
+def controller(strategies, grid_size, fruit_ratio = 1., max_iter = None, verbose = 0, gui_active = False, game_speed = None):
     # Pygame Init
     pygame.init()
     clock = pygame.time.Clock()
@@ -17,7 +17,7 @@ def controller(strategies, grid_size, candy_ratio = 1., max_iter = None, verbose
         quit_game = False
 
     # Start Game
-    game = Game(grid_size, len(strategies), candy_ratio = candy_ratio, max_iter = max_iter)
+    game = Game(grid_size, len(strategies), fruit_ratio = fruit_ratio, max_iter = max_iter)
     # state = game.startState()
     state = game.start(strategies)
     prev_human_action = None
@@ -30,8 +30,8 @@ def controller(strategies, grid_size, candy_ratio = 1., max_iter = None, verbose
 
     while not ((gui_active and quit_game) or ((not gui_active) and game_over)):
         # Print state
-        if verbose > 0:
-            state.printGrid(game.grid_size)
+        #if verbose > 0:
+            #state.printGrid(game.grid_size)
         # Get events
         if gui_active:
             events = pygame.event.get()
@@ -72,13 +72,13 @@ def controller(strategies, grid_size, candy_ratio = 1., max_iter = None, verbose
             actions[i_human] = human_action
             prev_human_action = human_action
 
-        if verbose > 1:
-            print(state)
-            print(actions)
+        #if verbose > 1:
+            #print(state)
+            #print(actions)
 
         # Update the state
         if not game_over:
-            state = game.succ(state, actions, copy = False)
+            state = game.tick(state, actions, copy = False)
         # Pause
         if game_speed:
             clock.tick(game_speed)
@@ -93,8 +93,8 @@ def controller(strategies, grid_size, candy_ratio = 1., max_iter = None, verbose
             win.updateSprites(state)
             win.refresh()
 
-    if verbose > 0:
-        state.printGrid(game.grid_size)
+    #if verbose > 0:
+        #state.printGrid(game.grid_size)
 
     return state
 
@@ -103,7 +103,7 @@ if __name__ ==  "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "h":
         human_player = True
     max_iter = None
-    strategies = [SmartGreedyAgent, SmartGreedyAgent, OpportunistAgent]
+    strategies = [SmartGreedyAgent, SmartGreedyAgent, OpportunistAgent, OpportunistAgent, OpportunistAgent, OpportunistAgent]
 
     '''
     # add an RL agent
@@ -121,4 +121,4 @@ if __name__ ==  "__main__":
     if human_player:
         strategies.append(HumanAgent)
 
-    controller(strategies, 20, max_iter = max_iter, gui_active = True, verbose = 0, game_speed = 10)
+    controller(strategies, 40, max_iter = max_iter, gui_active = True, verbose = 0, game_speed = 10)

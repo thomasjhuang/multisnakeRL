@@ -10,8 +10,8 @@ if ACCELERATION:
     NORM_MOVES.append(2)                    # acceleration moves
 MOVES = [Move(dir, norm) for dir in DIRECTIONS for norm in NORM_MOVES]
 NO_MOVE = Move(direction = (0,0), norm = 0)
-CANDY_VAL = 1                               # default candy value
-CANDY_BONUS = 3                             # candy value for dead snakes
+FRUIT_VAL = 1                               # default candy value
+FRUIT_BONUS = 3                             # candy value for dead snakes
 
 RandomAgent = Agent(name = "RandomAgent", strategy = randomStrategy)
 GreedyAgent = Agent(name = "GreedyAgent", strategy = greedyStrategy)

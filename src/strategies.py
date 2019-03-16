@@ -17,22 +17,22 @@ def randomStrategy(id, state):
 
 def greedyStrategy(id, state):
     """
-    Take action which brings us closest to a candy - without even
+    Take action which brings us closest to a fruit - without even
     looking at other snakes.
     """
     actions = state.simple_actions(id)
     head = state.snakes[id].position[0]
     if len(actions) == 0:
         return None
-    if len(state.candies) == 0:
+    if len(state.fruits) == 0:
         return random.sample(actions, 1)[0]
 
-    best_move = min(((dist(move.apply(head), candy), move) for candy in list(state.candies.keys()) for move in actions), key=itemgetter(0))
+    best_move = min(((dist(move.apply(head), fruit), move) for fruit in list(state.fruits.keys()) for move in actions), key=itemgetter(0))
     return best_move[1]
 
 def smartGreedyStrategy(id, state):
     """
-    Take action which brings us closest to a candy
+    Take action which brings us closest to a fruit
     Checks if we're hitting another snake
     """
     snake = state.snakes[id]
@@ -43,24 +43,24 @@ def smartGreedyStrategy(id, state):
     if len(actions) == 0:
         return None
 
-    # If there is no candy we move randomly
-    if len(state.candies) == 0:
+    # If there is no fruit we move randomly
+    if len(state.fruits) == 0:
         return random.sample(actions, 1)[0]
     '''
     vals = []
-    for candy in list(state.candies.keys()):
+    for fruit in list(state.fruits.keys()):
         for move in actions:
-            vals.append(dist(snake.predictHead(move), candy)))
+            vals.append(dist(snake.predictHead(move), fruit)))
     print('type: ' + type(vals[0]))
     '''
 
-    best_move = min(((dist(snake.predictHead(move), candy), move)
-                    for candy in list(state.candies.keys()) for move in actions), key = lambda t: t[0])
+    best_move = min(((dist(snake.predictHead(move), fruit), move)
+                    for fruit in list(state.fruits.keys()) for move in actions), key = lambda t: t[0])
     return best_move[1]
 
 def opportunistStrategy(id, state):
     """
-    Take action which brings us closest to a candy
+    Take action which brings us closest to a fruit
     Checks if we're hitting another snake
     """
     snake = state.snakes[id]
@@ -72,14 +72,14 @@ def opportunistStrategy(id, state):
     if len(actions) == 0:
         return None
 
-    # If there is no candy we move randomly
-    if len(state.candies) == 0:
+    # If there is no fruit we move randomly
+    if len(state.fruits) == 0:
         return random.sample(actions, 1)[0]
 
-    min_dist = dict((candy, min(dist(s.position[0], candy) for s in list(state.snakes.values())))
-                    for candy in state.candies.keys())
-    best_move = min(((dist(snake.predictHead(move), candy) - min_dist[candy], dist(snake.predictHead(move), candy), move)
-                    for candy in list(state.candies.keys()) for move in actions), key = lambda t: t[0])
+    min_dist = dict((fruit, min(dist(s.position[0], fruit) for s in list(state.snakes.values())))
+                    for fruit in state.fruits.keys())
+    best_move = min(((dist(snake.predictHead(move), fruit) - min_dist[fruit], dist(snake.predictHead(move), fruit), move)
+                    for fruit in list(state.fruits.keys()) for move in actions), key = lambda t: t[0])
     return best_move[2]
 
 

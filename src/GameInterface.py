@@ -1,68 +1,24 @@
-"""
-Interface for the multi player snake game
-"""
-
-# imports
-import random, math, copy
-import utils
-import numpy as np
-from collections import deque
-from time import time
+import math
+import random
 from copy import deepcopy
-from move import Move
-from snake import Snake, newSnake
-from constants import ACCELERATION, DIRECTIONS, NORM_MOVES, MOVES, FRUIT_VAL, FRUIT_BONUS
-
+from snake import *
+from constants import DIRECTIONS, MOVES, FRUIT_VAL, FRUIT_BONUS
 
 class State:
     """
     State object for the multiplayer snake game.
-    Defined by a dictionary {id => snake} and {position => value} for candies.
+    Defined by a dictionary {id => snake} and {position => value} for fruits.
     """
 
     grid_size = None
-    n_snakes = 0
+    num_snakes = 0
     max_iter = None
-    time_copying = 0.0
 
-    def __init__(self, snakes, candies):
+    def __init__(self, snakes, fruits):
         self.snakes = snakes
-        self.candies = {c.position : c.value for c in candies}
+        self.fruits = {f.position : f.value for f in fruits}
         self.scores = {}
         self.iter = 0
-
-    def __str__(self):
-        s = "--- state {} ---\n".format(self.iter)
-        s += "- snakes:\n"
-        s += "\n".join(["\t{}:\t{}\t-\t{}".format(id, s.points, s.position) for id,s in self.snakes.items()])
-        s += "\n- candies:\n"
-        s += "\n".join(["\t{}\t{}".format(v, pos) for pos,v in self.candies.items()])
-        return s
-
-    def shape(self, i, j):
-        if (i,j) in self.candies:
-            if self.candies[(i,j)] == FRUIT_BONUS:
-                return ' +'
-            return ' *'
-        for id, s in self.snakes.items():
-            if (i,j) == s.position[0]:
-                return ' @'
-            c = s.countSnake((i,j))
-            if c == 1:
-                return ' {}'.format(id)
-            if c == 2:
-                return " #"
-        return '  '
-
-    def printGrid(self, grid_size = None):
-        if grid_size is None:
-            grid_size = self.grid_size
-        s = "--- state {} ---\n".format(self.iter)
-        s += "-" * 2*(grid_size + 1) + '\n'
-        for i in range(grid_size):
-            s += '|' + ''.join(self.shape(i,j) for j in range(grid_size)) + '|\n'
-        s += "-" * 2*(grid_size + 1)+ '\n'
-        print(s)
 
     def isAlive(self, snake_id):
         """
@@ -70,22 +26,22 @@ class State:
         """
         return (snake_id in self.snakes)
 
-    def addCandy(self, pos, val, dead_snake=-1):
+    def addFruit(self, pos, val, dead_snake=-1):
         """
-        Adds a candy of value val and position pos. If there is already a snake at the position, we don't add it
-        :param pos: the position for the candy as a tuple
-        :param val: the value of the candy
-        :return: True if the candy has been added, False if not
+        Adds a fruit of value val and position pos. If there is already a snake at the position, we don't add it
+        :param pos: the position for the fruit as a tuple
+        :param val: the value of the fruit
+        :return: True if the fruit has been added, False if not
         """
         if all(not s.onSnake(pos) for a, s in self.snakes.items() if a != dead_snake) \
-                and not pos in list(self.candies.keys()):
-            self.candies[pos] = val
+                and not pos in list(self.fruits.keys()):
+            self.fruits[pos] = val
             return True
         return False
 
-    def addNRandomCandies(self, n, grid_size):
+    def addNRandomFruits(self, n, grid_size):
         while n > 0:
-            if self.addCandy(
+            if self.addFruit(
                     (random.randint(0, grid_size-1), random.randint(0, grid_size-1)),
                     FRUIT_VAL
             ):
@@ -97,8 +53,8 @@ class State:
     def oneAgentUpdate(self, id, m):
         #Remember changes
         snake_who_died = None
-        candies_to_add = []
-        candies_removed = []
+        fruits_to_add = []
+        fruits_removed = []
         points_won = 0
         last_tail = self.snakes[id].last_tail
         last_pos = []
@@ -113,35 +69,35 @@ class State:
             if m.norm() == 2:
                 last_pos.append(self.snakes[id].position[-2])
             last_pos.append(self.snakes[id].position[-1])
-            new_candy_pos = self.snakes[id].move(m)
+            new_fruit_pos = self.snakes[id].move(m)
 
-            # We remember where to add candies when the snake accelerated
-            if new_candy_pos is not None:
-               candies_to_add.append(new_candy_pos)
+            # We remember where to add fruits when the snake accelerated
+            if new_fruit_pos is not None:
+               fruits_to_add.append(new_fruit_pos)
 
-            # We collect candies if head touches a candy
+            # We collect fruits if head touches a fruit
             head = self.snakes[id].head()
-            if head in self.candies:
-                points_won += self.candies.get(head)
-                candies_removed.append((head, self.candies.get(head)))
-                self.snakes[id].addPoints(self.candies.get(head))
-                del self.candies[head]
+            if head in self.fruits:
+                points_won += self.fruits.get(head)
+                fruits_removed.append((head, self.fruits.get(head)))
+                self.snakes[id].addPoints(self.fruits.get(head))
+                del self.fruits[head]
 
-            # If the snake accelerated, we check if the second part of the body touches a candy
+            # If the snake accelerated, we check if the second part of the body touches a fruit
             if m.norm() == 2:
                 accelerated[id] = True
                 second = self.snakes[id].position[1]
-                if second in self.candies:
-                    points_won += self.candies.get(second)
-                    candies_removed.append((second, self.candies.get(second)))
-                    self.snakes[id].addPoints(self.candies.get(second))
-                    del self.candies[second]
+                if second in self.fruits:
+                    points_won += self.fruits.get(second)
+                    fruits_removed.append((second, self.fruits.get(second)))
+                    self.snakes[id].addPoints(self.fruits.get(second))
+                    del self.fruits[second]
             else:
                 accelerated[id] = False
 
-        # add candies created by acceleration
-        for cand_pos in candies_to_add:
-            self.addCandy(cand_pos, FRUIT_VAL)
+        # add fruits created by acceleration
+        for cand_pos in fruits_to_add:
+            self.addFruit(cand_pos, FRUIT_VAL)
 
         # remove snakes which bumped into other snakes
         # list of (x,y) points occupied by other snakes
@@ -152,26 +108,26 @@ class State:
 
 
         if snake_who_died is not None:
-            # add candies on the snake position before last move
+            # add fruits on the snake position before last move
             self.snakes[id].popleft()
             for p in self.snakes[id].position:
-                if self.addCandy(p, FRUIT_BONUS, dead_snake=id):
-                    candies_to_add.append(p)
+                if self.addFruit(p, FRUIT_BONUS, dead_snake=id):
+                    fruits_to_add.append(p)
             # print "Snake {} died with {} points".format(id, self.snakes[id].points)
             del self.snakes[id]
 
-        return last_pos, id, candies_to_add, candies_removed, points_won, last_tail, snake_who_died
+        return last_pos, id, fruits_to_add, fruits_removed, points_won, last_tail, snake_who_died
 
     def reverseChanges(self, changes):
-        last_pos, id, candies_added, candies_removed, points_won, last_tail, snake_who_died = changes
+        last_pos, id, fruits_added, fruits_removed, points_won, last_tail, snake_who_died = changes
         if snake_who_died is not None:
             self.snakes[id] = snake_who_died
         self.snakes[id].removePoints(points_won)
         self.snakes[id].backward(last_pos, last_tail)
-        for c in set(candies_added):
-            del self.candies[c]
-        for c, val in candies_removed:
-            self.addCandy(c, val)
+        for c in set(fruits_added):
+            del self.fruits[c]
+        for c, val in fruits_removed:
+            self.addFruit(c, val)
 
 
     def update(self, moves):
@@ -184,7 +140,7 @@ class State:
         deads = []
 
         # update positions
-        candies_to_add = []
+        fruits_to_add = []
         accelerated = {}
         for id, m in moves.items():
             # If the snake couldn't move, then it's dead
@@ -192,31 +148,31 @@ class State:
                 deads.append(id)
                 continue
 
-            new_candy_pos = self.snakes[id].move(m)
+            new_fruit_pos = self.snakes[id].move(m)
 
-            # We remember where to add candies when the snake accelerated
-            if new_candy_pos is not None:
-               candies_to_add.append(new_candy_pos)
+            # We remember where to add fruits when the snake accelerated
+            if new_fruit_pos is not None:
+               fruits_to_add.append(new_fruit_pos)
 
-            # We collect candies if head touches a candy
+            # We collect fruits if head touches a fruit
             head = self.snakes[id].head()
-            if head in self.candies:
-                self.snakes[id].addPoints(self.candies.get(head))
-                del self.candies[head]
+            if head in self.fruits:
+                self.snakes[id].addPoints(self.fruits.get(head))
+                del self.fruits[head]
 
-            # If the snake accelerated, we check if the second part of the body touches a candy
+            # If the snake accelerated, we check if the second part of the body touches a fruit
             if m.norm() == 2:
                 accelerated[id] = True
                 second = self.snakes[id].position[1]
-                if second in self.candies:
-                    self.snakes[id].addPoints(self.candies.get(second))
-                    del self.candies[second]
+                if second in self.fruits:
+                    self.snakes[id].addPoints(self.fruits.get(second))
+                    del self.fruits[second]
             else:
                 accelerated[id] = False
 
-        # add candies created by acceleration
-        for cand_pos in candies_to_add:
-            self.addCandy(cand_pos, FRUIT_BONUS)
+        # add fruits created by acceleration
+        for cand_pos in fruits_to_add:
+            self.addFruit(cand_pos, FRUIT_BONUS)
 
         # remove snakes which bumped into other snakes
 
@@ -227,13 +183,13 @@ class State:
                     or not utils.isOnGrid(self.snakes[id].position[0], self.grid_size)):
                 deads.append(id)
 
-        # save scores and add candies
+        # save scores and add fruits
         rank = len(self.snakes)
         for id in deads:
             self.scores[id] = (rank, self.snakes[id].points)
-            # add candies on the snake position before last move
+            # add fruits on the snake position before last move
             for p in self.snakes[id].position:
-                self.addCandy(p, FRUIT_BONUS, dead_snake=id)
+                self.addFruit(p, FRUIT_BONUS, dead_snake=id)
             # print "Snake {} died with {} points".format(id, self.snakes[id].points)
             del self.snakes[id]
 
@@ -260,8 +216,8 @@ class State:
             agents = list(self.snakes.keys())
         else:
             agents = set(agents).intersection(set(list(self.snakes.keys())))
-        for i in range(1,self.n_snakes+1):
-            next_snake = (agent+i) % self.n_snakes
+        for i in range(1, self.num_snakes+1):
+            next_snake = (agent+i) % self.num_snakes
             if next_snake in agents:
                 return next_snake
         return agent
@@ -325,63 +281,75 @@ class State:
 
 
 class Game:
-    def __init__(self, grid_size, n_snakes = 2, candy_ratio = 1., max_iter = None):
+    def __init__(self, grid_size, num_snakes = 2, fruit_ratio = 1, max_iter = None):
         self.grid_size = grid_size
+        self.num_snakes = num_snakes
+        self.fruit_ratio = fruit_ratio
         self.max_iter = max_iter
-        self.n_snakes = n_snakes
-        self.candy_ratio = candy_ratio
         self.current_state = None
         self.previous_state = None
         self.agents = []
 
-
         # Update static variables of State
         State.grid_size = grid_size
         newSnake.grid_size = grid_size
-        State.n_snakes = n_snakes
+        State.num_snakes = num_snakes
         State.max_iter = max_iter
 
-    def startState(self):
+    def startingState(self):
         """
-        Initialize a game with `n_snakes` snakes of size 2, randomly assigned to different locations of the grid,
-        and `n_candies` candies, randomly located over the grid.
-        Guarantees a valid state.
+        Divides the map into equally size squares before randomly assigning each snake to a spawn square. Snake spawn are
+        guaranteed to be valid. Randomly spawns fruit_ratio fruits for each snake.
+        Returns
+        -------
+        start_state : State
+            State object representing the valid starting state of the game
         """
 
-        n_squares_per_row = int(math.ceil(math.sqrt(self.n_snakes))**2)
-        square_size = self.grid_size // int(n_squares_per_row)
-        assignment = random.sample(range(n_squares_per_row ** 2), self.n_snakes)
+        # Ensuring that we can create enough square spawn sections of equal size to accomdate all snakes
+        num_spawn_sections_row = int(math.ceil(math.sqrt(self.num_snakes))**2)
+        spawn_section_size = self.grid_size // int(num_spawn_sections_row)
+        # Assign snakes to spawn sections
+        snake_assignment = random.sample(range(num_spawn_sections_row ** 2), self.num_snakes)
 
-
-        assert self.grid_size >= 3*n_squares_per_row
+        assert self.grid_size >= 3*num_spawn_sections_row, "Map Grid is too small to guarantee all snakes will be spawned without overlap"
 
         snakes = {}
-        for snake, assign in enumerate(assignment):
-            head = (random.randint(1, square_size-2) + (assign // n_squares_per_row) * square_size,
-                    random.randint(1, square_size-2) + (assign % n_squares_per_row)  * square_size)
+        for snake, assign in enumerate(snake_assignment):
+            ''' Randomly chose a point for the head in the assigned spawn section that is at least 2 away from the 
+            boundaries of the section to ensure that a snake of length 2 will not exceeed the section's boundaries '''
+            head = (random.randint(1, spawn_section_size - 2) + (assign // num_spawn_sections_row) * spawn_section_size,
+                    random.randint(1, spawn_section_size - 2) + (assign % num_spawn_sections_row) * spawn_section_size)
+            # Create new snake with head at chosen location of length 2 with random starting direction
             snakes[snake] = newSnake([head, utils.add(head, random.sample(DIRECTIONS, 1)[0])], snake)
 
-        candies_to_put = 2 * int(self.candy_ratio) + 1
         start_state = State(snakes, {})
-        start_state.addNRandomCandies(candies_to_put, self.grid_size)
+        # Randomly spawn fruit_ratio fruits for each snake
+        start_state.addNRandomFruits(self.fruit_ratio * self.num_snakes, self.grid_size)
         return start_state
+
 
     def start(self, agents):
         """
-        Initialize a game with a valid startState.
-        Returns the current state.
+        Creates a valid starting state for the game and performs necessary assignments
+        Parameters
+        ----------
+        agents : List[Agent]
+            List of Agent objects to be applied to snakes
+        Returns
+        -------
+        current_state : State
+            State object representing the current state of the game
         """
-        self.current_state = self.startState()
+        self.current_state = self.startingState()
         self.agents = agents
-        for i,agent in enumerate(self.agents):
+        for i, agent in enumerate(self.agents):
             agent.setPlayerId(i)
-
         return self.current_state
 
     def isEnd(self, state = None):
         if state is None:
             state = self.current_state
-
         if self.max_iter:
             return len(state.snakes) <= 1 or state.iter == self.max_iter
         else:
@@ -393,18 +361,14 @@ class Game:
     def agentActions(self):
         return {i: self.agents[i].nextAction(self.current_state) for i in list(self.current_state.snakes.keys())}
 
-    def succ(self, state, actions, copy = True):
-        """
-        `actions` is a dict {snake_id => move}
-        Update snakes' position and randomly add some candies.
-        """
+    def tick(self, state, actions, copy=True):
         if copy:
             newState = deepcopy(state)
         else:
             newState = state
         self.previous_state = state
         newState.update(actions)
-        rand_pos = (random.randint(0, self.grid_size-1), random.randint(0, self.grid_size-1))
+        rand_pos = (random.randint(0, self.grid_size - 1), random.randint(0, self.grid_size - 1))
         newState.addFruit(rand_pos, FRUIT_VAL)
         self.current_state = newState
         return newState
@@ -417,3 +381,6 @@ class Game:
         else: # it died
             reward = - 10.
         return reward
+
+
+
