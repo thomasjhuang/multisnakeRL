@@ -39,3 +39,8 @@ FRUIT_BONUS = 3                             # candy value for dead snakes
 
 RandomAgent = Agent(name = "RandomAgent", strategy = randomStrategy)
 HumanAgent = Agent(name = "human", strategy = humanStrategy)
+SimpleHC = Agent(name = "SimpleHC", strategy=simpleHillClimbingStrategy)
+WeightedHC1 = Agent(name = "WeightedHC1", strategy=weightedHillClimbingStrategy1)
+WeightedHCPoint5 = Agent(name = "WeightedHCPoint5", strategy=weightedHillClimbingStrategyPoint5)
+WeightedHCPoint33 = Agent(name = "WeightedHCPoint33", strategy=weightedHillClimbingStrategyPoint33)
+

@@ -30,7 +30,7 @@ import config
 from hp import *
 from utils import progressBar
 from controller import controller
-from strategies import randomStrategy, greedyStrategy, smartGreedyStrategy, opportunistStrategy
+from strategies import randomStrategy
 from features import FeatureExtractor
 
 def simulate(n_simul, agents, grid_size, fruit_ratio = 1., max_iter = 500):
@@ -48,7 +48,8 @@ def simulate(n_simul, agents, grid_size, fruit_ratio = 1., max_iter = 500):
             points[list(endState.snakes.keys())[0]].append(list(endState.snakes.values())[0].points)
 
         for id in range(len(agents)):
-            scores[id].append(endState.scores[id])
+            temp = endState.scores[id]
+            scores[id].append(temp)
 
         iterations.append(endState.iter)
     progressBar(n_simul, n_simul)

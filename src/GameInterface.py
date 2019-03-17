@@ -41,6 +41,7 @@ class State:
     def __init__(self, snakes, fruits):
         self.snakes = snakes
         self.fruits = {f.position : f.value for f in fruits}
+        #self.fruits = dict((c.position, c.value) for c in fruits)
         self.scores = {}
         self.iter = 0
 
@@ -330,7 +331,7 @@ class Game:
             State object representing the valid starting state of the game
         """
 
-        # Ensuring that we can create enough square spawn sections of equal size to accomdate all snakes
+        # Ensuring that we can create enough square spawn sections of equal size to accommodate all snakes
         num_spawn_sections_row = int(math.ceil(math.sqrt(self.num_snakes))**2)
         spawn_section_size = self.grid_size // int(num_spawn_sections_row)
         # Assign snakes to spawn sections
@@ -341,7 +342,7 @@ class Game:
         snakes = {}
         for snake, assign in enumerate(snake_assignment):
             ''' Randomly chose a point for the head in the assigned spawn section that is at least 2 away from the
-            boundaries of the section to ensure that a snake of length 2 will not exceeed the section's boundaries '''
+            boundaries of the section to ensure that a snake of length 2 will not exceed the section's boundaries '''
             head = (random.randint(1, spawn_section_size - 2) + (assign // num_spawn_sections_row) * spawn_section_size,
                     random.randint(1, spawn_section_size - 2) + (assign % num_spawn_sections_row) * spawn_section_size)
             # Create new snake with head at chosen location of length 2 with random starting direction

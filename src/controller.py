@@ -127,9 +127,9 @@ if __name__ ==  "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "h":
         human_player = True
     max_iter = None
-    strategies = [RandomAgent, HumanAgent]
+    strategies = [RandomAgent, SimpleHC, WeightedHC1, WeightedHCPoint5, WeightedHCPoint33]
 
     if human_player:
         strategies.append(HumanAgent)
 
-    controller(strategies, 40, max_iter = max_iter, gui_active = True, verbose = 0, game_speed = 10)
+    controller(strategies, 50, max_iter = max_iter, gui_active = True, verbose = 0, game_speed = 10)
