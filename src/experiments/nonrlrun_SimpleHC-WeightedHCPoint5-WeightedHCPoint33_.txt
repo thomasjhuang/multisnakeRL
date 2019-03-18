@@ -1,0 +1,31 @@
+
+
+=======Results=======
+Run 500 simulations
+Max iteration: 1000 
+
+	 Snake 0 (SimpleHC) wins 30.80% of the games, with 21.64 points on average
+	 Snake 0 (SimpleHC) wins 30.80% of the games, with 21.64 points on average
+	 Snake 1 (WeightedHCPoint5) wins 29.20% of the games, with 28.28 points on average
+	 Snake 1 (WeightedHCPoint5) wins 29.20% of the games, with 28.28 points on average
+	 Snake 2 (WeightedHCPoint33) wins 32.00% of the games, with 29.74 points on average
+	 Snake 2 (WeightedHCPoint33) wins 32.00% of the games, with 29.74 points on average
+
+Scores
+	 Snake 0 (SimpleHC): avg score = 14.77, finishes with 26.70 points on average
+	 Snake 1 (WeightedHCPoint5): avg score = 15.15, finishes with 25.80 points on average
+	 Snake 2 (WeightedHCPoint33): avg score = 15.88, finishes with 25.71 points on average
+
+Iterations per game: 82.54 +- 84.05
+Time out is reached 0.00% of the time
+Simulations took 0.05538856792449951 sec on avg
+
+
+Params
+agent = simplestrategies
+filename = nonrlrun
+game_hp = grid_size = 20 | max_iter = 100 | discount = 0.9
+depth = <function <lambda> at 0x10693c730>
+num_trials = 500
+opponents = SimpleHC, WeightedHCPoint5, WeightedHCPoint33
+comment = 
