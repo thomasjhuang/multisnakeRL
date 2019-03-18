@@ -43,4 +43,6 @@ SimpleHC = Agent(name = "SimpleHC", strategy=simpleHillClimbingStrategy)
 WeightedHC1 = Agent(name = "WeightedHC1", strategy=weightedHillClimbingStrategy1)
 WeightedHCPoint5 = Agent(name = "WeightedHCPoint5", strategy=weightedHillClimbingStrategyPoint5)
 WeightedHCPoint33 = Agent(name = "WeightedHCPoint33", strategy=weightedHillClimbingStrategyPoint33)
+GreedyAgent = Agent(name = "GreedyAgent", strategy = greedyStrategy)
+OpportunistAgent = Agent(name = "OpportunistAgent", strategy = opportunistStrategy)
 

@@ -75,7 +75,7 @@ class State:
     def onOtherSnakes(self, pos, id):
         return any(s.onSnake(pos) for i,s in self.snakes.items() if i != id)
 
-    def onAgentUpdate(self, id, m):
+    def oneAgentUpdate(self, id, m):
         #Remember changes
         snake_who_died = None
         fruits_to_add = []
@@ -248,7 +248,7 @@ class State:
         return agent
 
     def generateSuccessor(self, agent, move):
-        return self.onAgentUpdate(agent, move)
+        return self.oneAgentUpdate(agent, move)
 
     def getScore(self, agent):
         if self.isDraw():

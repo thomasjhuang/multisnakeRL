@@ -1,0 +1,34 @@
+
+
+=======Results=======
+Run 1000 simulations
+Max iteration: 1000 
+
+	 Snake 0 (RandomAgent) wins 5.30% of the games, with 17.98 points on average
+	 Snake 0 (RandomAgent) wins 5.30% of the games, with 17.98 points on average
+	 Snake 1 (GreedyAgent) wins 7.30% of the games, with 68.26 points on average
+	 Snake 1 (GreedyAgent) wins 7.30% of the games, with 68.26 points on average
+	 Snake 2 (WeightedHCPoint33) wins 32.50% of the games, with 103.37 points on average
+	 Snake 2 (WeightedHCPoint33) wins 32.50% of the games, with 103.37 points on average
+	 Snake 3 (OpportunistAgent) wins 44.80% of the games, with 66.48 points on average
+	 Snake 3 (OpportunistAgent) wins 44.80% of the games, with 66.48 points on average
+
+Scores
+	 Snake 0 (RandomAgent): avg score = 7.20, finishes with 16.19 points on average
+	 Snake 1 (GreedyAgent): avg score = 13.87, finishes with 29.90 points on average
+	 Snake 2 (WeightedHCPoint33): avg score = 52.28, finishes with 74.29 points on average
+	 Snake 3 (OpportunistAgent): avg score = 40.36, finishes with 52.98 points on average
+
+Iterations per game: 218.27 +- 121.43
+Time out is reached 0.00% of the time
+Simulations took 0.23774497413635254 sec on avg
+
+
+Params
+agent = simplestrategies
+filename = nonrlrun
+game_hp = grid_size = 20 | max_iter = None | discount = 0.9
+depth = <function <lambda> at 0x10f3ba730>
+num_trials = 1000
+opponents = RandomAgent, GreedyAgent, WeightedHCPoint33, OpportunistAgent
+comment = 
