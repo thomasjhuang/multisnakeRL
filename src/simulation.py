@@ -63,7 +63,7 @@ if __name__ ==  "__main__":
     if len(sys.argv) > 1:
         n_simul = int(sys.argv[1])
     else:
-        n_simul = 1000
+        n_simul = config.num_trials
 
     print("Simulation config:", ["{} = {}".format(k,v) for k,v in config.__dict__.items() if not k.startswith('__')])
 

@@ -41,8 +41,8 @@ class FeatureExtractor:
 
         tiles = self.radius**2 + (self.radius - 1)**2
         self.prefix = {
-            "candy1" : 0,
-            "candy2" : tiles,
+            "fruit1" : 0,
+            "fruit2" : tiles,
             "adv-head" : 2 * tiles,
             "adv-tail" : 3 * tiles,
             "my-tail" : 4 * tiles,
@@ -101,8 +101,8 @@ class FeatureExtractor:
             return self.relativePos(head, p, dir_)
 
         features = [
-            (('candy', v, relPos(c)), 1.)
-                for c,v in state.candies.items()
+            (('fruit', v, relPos(c)), 1.)
+                for c,v in state.fruits.items()
                 if utils.dist(head, c) < self.radius
         ]
         features += [
@@ -179,10 +179,10 @@ class FeatureExtractor:
                 arrayFeatures[self.prefix["tot"] - 1] += 1.
             elif f == "non-auth":
                 arrayFeatures[self.prefix["non-auth"]] += 1.
-            elif f[0] == "candy" and f[1] == FRUIT_VAL:
-                arrayFeatures[self.prefix["candy1"] + self.index[f[2]]] += 1.
-            elif f[0] == "candy" and f[1] == FRUIT_BONUS:
-                arrayFeatures[self.prefix["candy2"] + self.index[f[2]]] += 1.
+            elif f[0] == "fruit" and f[1] == FRUIT_VAL:
+                arrayFeatures[self.prefix["fruit1"] + self.index[f[2]]] += 1.
+            elif f[0] == "fruit" and f[1] == FRUIT_BONUS:
+                arrayFeatures[self.prefix["fruit2"] + self.index[f[2]]] += 1.
             elif f[0] in ["adv-head", "adv-tail", "my-tail"]:
                 arrayFeatures[self.prefix[f[0]] + self.index[f[1]]] += 1.
             elif f[0] in ["wall-xr", "wall-xl", "wall-yt", "wall-yb"]: #["x", "y"]:
@@ -196,10 +196,10 @@ class FeatureExtractor:
             return self.prefix["tot"] - 1
         elif f == "non-auth":
             return self.prefix["non-auth"]
-        elif f[0] == "candy" and f[1] == FRUIT_VAL:
-            return self.prefix["candy1"] + self.index[f[2]]
-        elif f[0] == "candy" and f[1] == FRUIT_BONUS:
-            return self.prefix["candy2"] + self.index[f[2]]
+        elif f[0] == "fruit" and f[1] == FRUIT_VAL:
+            return self.prefix["fruit1"] + self.index[f[2]]
+        elif f[0] == "fruit" and f[1] == FRUIT_BONUS:
+            return self.prefix["fruit2"] + self.index[f[2]]
         elif f[0] in ["adv-head", "adv-tail", "my-tail"]:
             return self.prefix[f[0]] + self.index[f[1]]
         elif f[0] in ["wall-xr", "wall-xl", "wall-yt", "wall-yb"]: #["x", "y"]:

@@ -26,8 +26,8 @@ from constants import *
 from hp import *
 agent             = "simplestrategies"
 filename          = "nonrlrun"
-game_hp           = HP(grid_size = 20, max_iter = None, discount = 0.9)
+game_hp           = HP(grid_size = 50, max_iter = None, discount = 0.9)
 depth             = lambda s,a : survivorDfunc(s, a , 2, 0.5)
-num_trials        = 1000
-opponents         = [RandomAgent, GreedyAgent, WeightedHCPoint33, OpportunistAgent]
+num_trials        = 50
+opponents         = [RandomAgent, GreedyAgent]
 comment           = ""

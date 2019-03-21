@@ -142,10 +142,10 @@ class newSnake:
 
     def move(self, move):
         '''
-        Moves according the direction vectors, if it accelerates, returns the position to put a candy on
+        Moves according the direction vectors, if it accelerates, returns the position to put a fruit on
         :param move: a (direction, norm) tuple with direction being the tuple encoding the direction
         and norm being 1 for a normal move and 2 for acceleration
-        :return: None if the snake didn't accelerate, the position to put a candy on, if it did accelerate
+        :return: None if the snake didn't accelerate, the position to put a fruit on, if it did accelerate
         '''
         norm, direction = move.norm(), move.direction()
         self.on_tail = False
@@ -247,10 +247,10 @@ class Snake:
 
     def move(self, move):
         '''
-        Moves according the direction vectors, if it accelerates, returns the position to put a candy on
+        Moves according the direction vectors, if it accelerates, returns the position to put a fruit on
         :param move: a (direction, norm) tuple with direction being the tuple encoding the direction
         and norm being 1 for a normal move and 2 for acceleration
-        :return: None if the snake didn't accelerate, the position to put a candy on, if it did accelerate
+        :return: None if the snake didn't accelerate, the position to put a fruit on, if it did accelerate
         '''
         norm, direction = move.norm(), move.direction()
         self.on_tail = False
